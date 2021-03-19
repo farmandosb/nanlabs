@@ -1,2 +1,0 @@
-# nanlabs
-nanlabs excersice
