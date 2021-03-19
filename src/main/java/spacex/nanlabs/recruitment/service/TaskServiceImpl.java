@@ -222,6 +222,17 @@ public class TaskServiceImpl implements ITaskService {
 
 		return list;
 	}
+	
+	public TrelloList getExistingList(String name) {
+		List<TrelloList> listOfLists = new ArrayList<TrelloList>(Arrays.asList(getLists()));
+		TrelloList list = new TrelloList();
+		list = null;
+		if (listOfLists.stream().filter(o -> o.getName().equals(name)).findFirst().isPresent()) {
+			list = listOfLists.stream().filter(o -> o.getName().equals(name)).findFirst().get();
+			logger.info("List with name: " + name + " , already exist");
+		} 
+		return list;
+	}
 
 	public HashMap<String, String> getLabelMapIfExistOrCreate() {
 		List<TrelloLabel> listOfLabels = new ArrayList<TrelloLabel>(Arrays.asList(getLabels()));
@@ -233,10 +244,27 @@ public class TaskServiceImpl implements ITaskService {
 			if (listOfLabels.stream().filter(o -> o.getName().equals(category.getName())).findFirst().isPresent()) {
 				label = listOfLabels.stream().filter(o -> o.getName().equals(category.getName())).findFirst().get();
 				labelIdMap.put(label.getName(), label.getId());
+				logger.info("Label with with name: " + label.getName() + " , already exist");
 			} else {
 				label = createLabel(category.getName());
 				labelIdMap.put(label.getName(), label.getId());
+				logger.info("Label with with name: " + label.getName() + " , has been created");
 			}
+		}
+		return labelIdMap;
+	}
+	
+	public HashMap<String, String> getExistingLabelMap() {
+		List<TrelloLabel> listOfLabels = new ArrayList<TrelloLabel>(Arrays.asList(getLabels()));
+		HashMap<String, String> labelIdMap = new HashMap<String, String>();
+		TrelloLabel label = new TrelloLabel();
+		label = null;
+
+		for (CategoryEnum category : CategoryEnum.values()) {
+			if (listOfLabels.stream().filter(o -> o.getName().equals(category.getName())).findFirst().isPresent()) {
+				label = listOfLabels.stream().filter(o -> o.getName().equals(category.getName())).findFirst().get();
+				labelIdMap.put(label.getName(), label.getId());
+			} 
 		}
 		return labelIdMap;
 	}

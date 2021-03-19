@@ -1,7 +1,10 @@
 package spacex.nanlabs.recruitment.model;
 
+import org.springframework.stereotype.Component;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+@Component
 public class TrelloList {
 	String id;
 	String name;

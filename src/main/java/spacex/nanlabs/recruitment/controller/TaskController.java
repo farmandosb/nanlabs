@@ -35,19 +35,24 @@ public class TaskController {
 	
 	private final String listName = "TO DO";
 	
+	
 	@Autowired
 	private TaskServiceImpl taskServiceImpl;
 
 	@Autowired
 	private GetTaskFactory taskFactory;
 	
+	
+	private TrelloList list = new TrelloList();
+	
+	private HashMap<String, String> labelIdMap  = new HashMap<String, String>(); 
+	
 	@PostMapping("/")
 	public ResponseEntity<String> createCard(@RequestBody Map<String, String> body) {
-		TrelloList list = new TrelloList();
-		HashMap<String, String> labelIdMap  = new HashMap<String, String>(); 
+	
 		
-		list = taskServiceImpl.getListIfExistOrCreate(listName);
-		labelIdMap = taskServiceImpl.getLabelMapIfExistOrCreate();
+		list = taskServiceImpl.getExistingList(listName);
+		labelIdMap = taskServiceImpl.getExistingLabelMap();
 		
 		switch (body.get("type")) {
 		case "issue":
@@ -56,8 +61,6 @@ public class TaskController {
 			issueTask.setDesc(body.get("description"));
 			issueTask.setName(body.get("title"));
 			issueTask.setIdList(list.getId());
-			//String[] arr1 = {labelIdMap.get("Maintenance")};
-			//issueTask.setIdLabels(arr1);
 			issueTask.setIdMembers(new String[]{""});
 			taskServiceImpl.createCard(issueTask.getIdList(), issueTask.getName(), issueTask.getDesc(), issueTask.getIdMembers(), issueTask.getIdLabels());
 			logger.info(issueTask);
@@ -68,7 +71,7 @@ public class TaskController {
 			bugTask.setDesc(body.get("description"));
 			bugTask.setName("");
 			bugTask.setIdList(list.getId());
-			bugTask.setIdLabels(new String[] {labelIdMap.get("Bug")});
+			bugTask.setIdLabels(new String[] {this.labelIdMap.get("Bug")});
 			String[] arrMembers = {taskServiceImpl.getMembers()[(getRandomNumber(0,taskServiceImpl.getMembers().length))].getId()};
 			bugTask.setIdMembers(arrMembers);
 			taskServiceImpl.createCard(bugTask.getIdList(), bugTask.getName(), bugTask.getDesc(), bugTask.getIdMembers(), bugTask.getIdLabels());
@@ -121,5 +124,8 @@ public class TaskController {
 	    return (int) ((Math.random() * (max - min)) + min);
 	}
 	
+	
+	
+
 
 }

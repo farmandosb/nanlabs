@@ -1,5 +1,8 @@
 package spacex.nanlabs.recruitment.model;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class TrelloLabel {
 	String id;
 	String idBoard;
