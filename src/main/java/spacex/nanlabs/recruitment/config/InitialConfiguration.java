@@ -13,14 +13,14 @@ import spacex.nanlabs.recruitment.model.TrelloList;
 import spacex.nanlabs.recruitment.service.TaskServiceImpl;
 
 @Component
-public class EventListenerAppInit {
+public class InitialConfiguration {
 
 	@Autowired
 	private TaskServiceImpl taskServiceImpl;
 
 	private final String listName = "TO DO";
 
-	private final Logger logger = LogManager.getLogger(EventListenerAppInit.class);
+	private final Logger logger = LogManager.getLogger(InitialConfiguration.class);
 
 	public static int counter;
 
