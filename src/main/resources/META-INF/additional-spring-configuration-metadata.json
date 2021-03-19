@@ -1,0 +1,12 @@
+{"properties": [
+  {
+    "name": "BOARD_ID",
+    "type": "java.lang.String",
+    "description": "A description for 'BOARD_ID'"
+  },
+  {
+    "name": "URL_BASE",
+    "type": "java.lang.String",
+    "description": "A description for 'URL_BASE'"
+  }
+]}
